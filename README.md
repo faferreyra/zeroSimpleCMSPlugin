@@ -6,7 +6,7 @@ CMS plugin for symfony 1.4 based on code from sfSimpelCMSPlugin made by Francois
 See README file for documentation of the original release.
 
 Installation
-===========
+------------
 
 The easiest way to install this plugin is using Composer:
 
