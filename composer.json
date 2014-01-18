@@ -1,0 +1,10 @@
+{
+	"name" : "faferreyra/zero-simple-cms-plugin",
+	"type" : "symfony1-plugin",
+	"description" : "symfony 1.x plugin which provides a simple foundation for a CMS",
+	"keywords" : ["symfony", "cms"],
+	"require" : {
+		"composer/installers" : "*",
+		"propel/sf-propel-o-r-m-plugin": "dev-master"
+	}
+}

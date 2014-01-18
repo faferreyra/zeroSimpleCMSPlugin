@@ -1,0 +1,292 @@
+div.editable_slot 
+{
+  margin: 10px 0 0 0;
+  padding: 5px;
+  /* background-color: #fcffff; */
+  border: solid 1px #efefff;
+}
+
+form.edit_slot textarea
+{
+  font-size: 12px;
+  font-family: verdana, sans-serif;
+  width: 910px;
+  height: 500px;
+  
+}
+
+form.edit_slot label
+{
+  font-family: verdana, sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+}
+
+
+form.edit_slot .image_slot_form
+{
+  margin: 2px 0;
+}
+
+form.edit_slot .image_slot_form label
+{
+  display: block;
+  float: left;
+  width: 200px;
+}
+
+form.edit_slot .image_slot_form input
+{
+  width: 250px;
+}
+
+form.edit_slot .submit_tag
+{
+  margin-left: 10px;
+}
+  
+div.editable_slot:hover
+{
+  border: solid 1px #9f9faf;
+}
+
+#editor-tools-container {
+	position: absolute;
+	top: 20px;
+	right: 50px;
+	 width: 250px;
+}
+
+
+#editor-box
+{
+  background: url(../images/cms_toolbox_bg.gif) no-repeat top left #fff;
+  border: solid 1px #BDBBAF;
+  width: 250px;
+  font-size: 11px;
+  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+}
+
+#editor-box h1
+{
+  font-size:14px;
+  font-family: 'Trebuchet MS',Verdana,Arial,Helvetica,sans-serif;
+  color: #1E2B4D;
+  cursor: move;
+  padding: 1px 1px 2px 24px;
+  margin: 0px;
+}
+
+#editor-box h1 a#toolbar_minifier
+{
+  display: block;
+  float: right;
+  position: relative;
+  top:2px;
+  background: url(../images/bullet_toggle_minus.png) no-repeat;
+  text-decoration: none;
+}
+
+#editor-box h1 a#toolbar_minifier:hover
+{
+  text-decoration: none;
+}
+
+#editor-box h1 a#toolbar_minifier.minimized
+{
+  background: url(../images/bullet_toggle_plus.png) no-repeat;
+}
+
+#editor-box #tools h2
+{
+  font-size:11px;
+  font-weight: normal;
+  font-family: 'Trebuchet MS',Verdana,Arial,Helvetica,sans-serif;
+  border-top: solid 1px #BDBBAF;
+  border-bottom: solid 1px #eee;
+  background: url(../images/cms_toolbox_header_bg.gif) repeat-x;
+  padding: 2px 5px;
+  margin: 0;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#editor-box a,
+#editor-box #tools h2 a
+{
+  color: #1E2B4D;
+}
+
+#editor-box #tools p, #editor-box #tools form
+{
+  padding: 0 10px;
+}
+
+#cms_toolbox_mode
+{
+  padding: 5px 0;
+}
+#cms_toolbox_mode div
+{
+  text-align: center;
+  padding: 5px;
+}
+
+#cms_toolbox_mode .preview
+{
+  background: url(../images/page_white_magnify.png) no-repeat 0px 1px;
+  padding: 2px 2px 2px 20px;
+}
+
+#cms_toolbox_mode .edit
+{
+  background: url(../images/page_white_edit.png) no-repeat 0px 1px;
+  padding: 2px 2px 2px 20px;
+}
+
+#cms_toolbox_mode .list
+{
+  background: url(../images/page_white_text.png) no-repeat 0px 1px;
+  padding: 2px 2px 2px 20px;
+}
+
+#cms_toolbox_mode .published
+{
+  background: url(/sf/sf_admin/images/save.png) no-repeat 0px 1px;
+  padding: 2px 2px 2px 20px;
+}
+
+#cms_toolbox_mode .unpublished
+{
+  background: url(/sf/sf_admin/images/cancel.png) no-repeat 0px 1px;
+  padding: 2px 2px 2px 20px;
+}
+
+#cms_toolbox_mode .selected
+{
+  background-color: #ffa;
+  font-weight: bold;
+}
+
+ul#cms_page_localizations
+{
+  text-align: center;
+  padding: 10px;
+}
+
+#cms_page_localizations li
+{
+  display: inline;
+}
+
+#cms_page_localizations .localization_exists
+{
+  font-weight: bold;
+}
+
+
+#editor-box #tools form
+{
+  margin:5px 0;
+}
+
+#editor-box #tools #cms_tools_change_page
+{
+  padding: 10px;
+}
+
+#editor-box #tools input[type=radio]
+{
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+#tools .form_control
+{
+  margin-bottom: 5px;
+}
+
+#tools .form_submit
+{
+  text-align: right;
+}
+
+#editor-box #tools label
+{
+  display: block;
+}
+
+#tools option.current
+{
+  color: grey;
+  background-color: lightgrey;
+}
+
+#editor-box #tools input, #editor-box #tools select, #editor-box #tools option
+{
+  font-size: 10px;
+}
+
+#editor-box #tools input, #editor-box #tools select
+{
+  margin-bottom:2px;
+}
+
+#editor-box #tools input.wide, #editor-box #tools select.wide
+{
+  width:100%;
+}
+
+#editor-box #tools ul {
+	overflow: hidden;
+	padding: 5px;
+	margin: 0px;
+}
+
+#editor-box #tools li
+{
+  list-style: none;
+  float: left;
+  margin-right: 10px;
+}
+
+#editor-box #tools li label {
+	display: inline;
+}
+
+#editor-box #tools li .current
+{
+  color: #DF4361;
+  font-weight: bold;
+}
+
+#cms-tools-change-page ul li
+{
+	display: block;
+	float: none !important;
+}
+
+
+.editable-slot {
+	border: 1px solid #ccc;
+	font-size: 1em;
+	cursor: pointer;
+}
+
+.slot-editor-container {
+	background-color: #fff;
+	width: 960px;
+	height: 600px;
+	border: 1px solid #ccc;
+	padding: 20px;
+	display: none;
+	font-size: 12px;
+}
+
+.edit-slot-form-container {
+	height: 550px;
+	overflow: auto;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 10px;
+}
+

@@ -1,0 +1,31 @@
+generator:
+  class: sfPropelGenerator
+  param:
+    model_class:           sfSimpleCMSPage
+    theme:                 admin15
+    non_verbose_templates: true
+    with_show:             false
+    singular:              sfSimpleCMSPage
+    plural:                sfSimpleCMSPages
+    route_prefix:          sf_simple_cms_page
+    with_propel_route:     1
+    actions_base_class:    sfActions
+
+    config:
+      actions: ~
+      fields:  ~
+      list:
+        query_methods: [findTree]
+        title: Pages List
+        display: [slugWithLevel, title, is_published, is_secure]
+        object_actions:
+          editPage: { label : Edit Page, action : editPage }
+          _delete: ~
+
+      filter:
+        display: [slug]
+      form:    ~
+      edit:
+        display: [title, is_published, is_secure]
+      new:
+        display: [title, is_published, is_secure]
