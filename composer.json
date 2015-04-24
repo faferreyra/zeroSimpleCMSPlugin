@@ -6,7 +6,7 @@
 	"require" : {
 		"composer/installers" : "*",
 		"propel/sf-propel-o-r-m-plugin": "dev-master",
-		"symfony/tmc-twitter-bootstrap-plugin"
+		"symfony/tmc-twitter-bootstrap-plugin" : "*"
 	},
 	"extra" : {
 		"branch-alias" : {
