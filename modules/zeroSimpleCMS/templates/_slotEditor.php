@@ -10,10 +10,10 @@
 	?>
 	</div>
 
-	<?php echo jq_form_remote_tag(array(
-		 'url' => 'zeroSimpleCMSAdmin/updateSlot',
-		 'update' => 'editable-slot-' . $slot->getName()
-	 )); ?>
+	<?php // echo jq_form_remote_tag(array(
+		 // 'url' => 'zeroSimpleCMSAdmin/updateSlot',
+		 // 'update' => 'editable-slot-' . $slot->getName()
+	 //)); ?>
 
 	
 	<div class="slot-editor-container" data-slotname="<?php echo $slot->getName(); ?>">
@@ -28,7 +28,7 @@
 			
 			<?php echo $slotPropertiesForm; ?>
 			<input type="submit" value="<?php echo __('Save'); ?>" class="close" />
-			<?php echo jq_button_to_function( __('Cancel'), 'void(0)', array('class' => 'close' )); ?>
+			<?php // echo jq_button_to_function( __('Cancel'), 'void(0)', array('class' => 'close' )); ?>
 			</div>
 		</div>
 	</div>

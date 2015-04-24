@@ -27,7 +27,6 @@ class sfSimpleCMSPageQuery extends BasesfSimpleCMSPageQuery
 	{
 		return $this->filterByIsPublished($published);
 	}
-
 }
 
 // sfSimpleCMSPageQuery

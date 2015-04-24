@@ -24,4 +24,31 @@ class sfSimpleCMSSlot extends BasesfSimpleCMSSlot
 		
 		return $slotType;
 	}
+
+    /**
+     * @param sfSimpleCMSPage $page
+     * @param $name
+     * @param string $culture
+     * @param string $slotType
+     * @return sfSimpleCMSSlot
+     * @throws PropelException
+     */
+    public static function getOrCreate(sfSimpleCMSPage $page, $name, $culture = 'es', $slotType = 'Html')
+    {
+        $slot = sfSimpleCMSSlotQuery::create()
+            ->filterBysfSimpleCMSPage($page)
+            ->filterByName($name)
+            ->filterByCulture($culture)
+            ->findOne();
+
+        if ($slot == null) {
+            $slot = new sfSimpleCMSSlot();
+            $slot->setsfSimpleCMSPage($page);
+            $slot->setCulture($culture);
+            $slot->setName($name);
+            $slot->setType($slotType);
+        }
+
+        return $slot;
+    }
 }

@@ -2,7 +2,7 @@ generator:
   class: sfPropelGenerator
   param:
     model_class:           sfSimpleCMSPage
-    theme:                 admin15
+    theme:                 tmcTwitterBootstrap
     non_verbose_templates: true
     with_show:             false
     singular:              sfSimpleCMSPage
@@ -15,17 +15,18 @@ generator:
       actions: ~
       fields:  ~
       list:
-        query_methods: [findTree]
+        # query_methods: [findTree]
         title: Pages List
         display: [slugWithLevel, title, is_published, is_secure]
         object_actions:
-          editPage: { label : Edit Page, action : editPage }
+          _edit: ~
           _delete: ~
 
       filter:
         display: [slug]
-      form:    ~
+      form:
+        class:            AdminZeroSimpleCmsPageForm
       edit:
-        display: [title, is_published, is_secure]
+        display: [slug, title, template, is_published, is_secure]
       new:
-        display: [title, is_published, is_secure]
+        display: [slug, title, template, is_published, is_secure]

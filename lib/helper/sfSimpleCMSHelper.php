@@ -1,10 +1,10 @@
 <?php
 
-use_helper('jQuery', 'I18N');
+use_helper('I18N');
 
 function include_editor_tools($page, $pageForm = null, $createForm = null)
 {
-	use_stylesheet('/zeroSimpleCMSPlugin/css/CMSEditorTools.css');
+	use_stylesheet('/zeroSimpleCmsPlugin/css/CMSEditorTools.css');
 	include_component('zeroSimpleCMSAdmin', 'editorTools', array('page' => $page, 'pageForm' => $pageForm, 'createForm' => $createForm ));
 }
 

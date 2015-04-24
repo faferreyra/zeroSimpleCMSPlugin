@@ -7,77 +7,125 @@
  */
 class BaseZeroSimpleCMSComponents extends sfComponents
 {
+    public function executeSlot()
+    {
+        $slotName = $this->slot;
 
-	public function executeRenderSlot()
-	{
-		$slotName = $this->slot;
+        $slot = sfSimpleCMSSlotQuery::create()
+            ->filterByName($slotName)
+            ->filterByPageId($this->page->getId())
+            ->filterByCulture(sfContext::getInstance()->getUser()->getCulture())
+            ->findOne();
 
-		$slot = sfSimpleCMSSlotQuery::create()
-						->filterByName($slotName)
-						->filterByPageId($this->page->getId())
-						->filterByCulture('es')
-						->findOne();
+        if ($slot != null) {
 
-		if ($slot != null)
-		{
+            $slotType = $slot->getType();
 
-			$slotType = $slot->getType();
+            $slotClass = 'zeroSimpleCMS' . ucfirst($slotType) . 'Slot';
 
-			$slotClass = 'zeroSimpleCMS' . ucfirst($slotType) . 'Slot';
+            $this->slot = new $slotClass;
+            $this->slot->setName($slotName);
+            $this->slot->setValue($slot->getValue());
 
-			$this->slot = new $slotClass;
-			$this->slot->setName($slotName);
-			$this->slot->setValue($slot->getValue());
-		}
-		else
-		{
-			// -- No hay slot en la DB, se crea uno nuevo.
-			$defaultSlotType = isset($this->defaults) && isset($this->defaults['type']) ? $this->defaults['type'] : sfConfig::get('app_zeroSimpleCMS_defaults_slotType', 'text');
+        } else {
 
-			$slotClass = 'zeroSimpleCMS' . ucfirst($defaultSlotType) . 'Slot';
+            // -- No hay slot en la DB, se crea uno nuevo.
+            $defaultSlotType = isset($this->defaults) && isset($this->defaults['type']) ? $this->defaults['type'] : sfConfig::get('app_zeroSimpleCMS_defaults_slotType', 'text');
 
-			/* @var $this->slot zeroSimpleCMSSlotType */
-			$this->slot = new $slotClass;
-			$this->slot->setName($slotName);
-			$this->slot->setValue(isset($this->defaults) ? sfYaml::dump($this->defaults)  : sfConfig::get('app_zeroSimpleCMS_defaults_slotValue', '[ Click to edit this slot ]'));
-		}
-	}
+            $slotClass = 'zeroSimpleCMS' . ucfirst($defaultSlotType) . 'Slot';
 
-	function executeSlotEditor()
-	{
-		$this->slotPropertiesForm = new zeroSimpleCMSSlotPropertiesForm($this->slot, $this->page);
-	}
+            /* @var $this ->slot zeroSimpleCMSSlotType */
+            $this->slot = new $slotClass;
+            $this->slot->setName($slotName);
+            $this->slot->setValue(isset($this->defaults) ? sfYaml::dump($this->defaults) : sfConfig::get('app_zeroSimpleCMS_defaults_slotValue', '[ Click to edit this slot ]'));
+        }
 
-	public function executeRenderPage()
-	{
-		$slug = $this->slug;
+        // TODO(fferreyra): Determinar cuando el slot está en modo edición.
+        $this->setVar('edition', true);
+    }
 
-		if ($slug != null)
-		{
-			$this->page = sfSimpleCMSPageQuery::create()
-							->filterBySlug($slug)
-							->filterByIsPublished(true)
-							->findOne();
+    function executeSlotEditor()
+    {
+        $this->slotPropertiesForm = new zeroSimpleCMSSlotPropertiesForm($this->slot, $this->page);
+    }
 
-			if ($this->page == null)
-			{
-				throw(new Exception(sprintf('Page not found with slug %s.', $slug)));
-			}
+    public function executePage()
+    {
+        $slug = $this->slug;
 
-			if ($this->page->getMeta() != null)
-			{
-				$this->getResponse()->addMeta('description', $this->page->getMeta(), true);
-			}
+        if ($slug != null) {
+            $this->page = sfSimpleCMSPageQuery::create()
+                ->filterBySlug($slug)
+                ->filterByIsPublished(true)
+                ->findOne();
 
-			if ($this->page->getKeywords() != null)
-			{
-				$this->getResponse()->addMeta('keywords', $this->page->getKeywords(), true);
-			}
-		}
-		else
-		{
-			throw(new Exception('Slug option not present calling component zeroSimpleCMS/renderPage'));
-		}
-	}
+            if ($this->page == null) {
+                throw(new Exception(sprintf('Page not found with slug %s.', $slug)));
+            }
 
+            if ($this->page->getMeta() != null) {
+                $this->getResponse()->addMeta('description', $this->page->getMeta(), true);
+            }
+
+            if ($this->page->getKeywords() != null) {
+                $this->getResponse()->addMeta('keywords', $this->page->getKeywords(), true);
+            }
+        } else {
+            throw(new Exception('Slug option not present calling component zeroSimpleCMS/page'));
+        }
+    }
+
+    public function executeHtml()
+    {
+        $slot = $this->getSlot($this->page, $this->slot, 'richEdit');
+        $this->setVar('slot', $slot);
+
+        /** @var myUser $user */
+        $user = sfContext::getInstance()->getUser();
+        $this->setVar('edition', $user->isAuthenticated() && ($user->isSuperAdmin()
+                || $user->getGuardUser()->hasPermission('cms_edit')));
+    }
+
+    /**
+     * @param sfSimpleCMSPage $page
+     * @param $slotName
+     * @param string $defaultSlotType
+     * @return zeroSimpleCMSSlotType
+     * @throws PropelException
+     */
+    private function getSlot(sfSimpleCMSPage $page, $slotName, $defaultSlotType = 'text')
+    {
+        $pageSlot = sfSimpleCMSSlotQuery::create()
+            ->filterByName($slotName)
+            ->filterBysfSimpleCMSPage($page)
+            ->filterByCulture(sfContext::getInstance()->getUser()->getCulture())
+            ->findOne();
+
+        if ($pageSlot != null) {
+
+            $slotType = $pageSlot->getType();
+
+            $slotClass = 'zeroSimpleCMS' . ucfirst($slotType) . 'Slot';
+
+            $slot = new $slotClass;
+            $slot->setName($slotName);
+            $slot->setValue($pageSlot->getValue());
+
+        } else {
+
+            // -- No hay slot en la DB, se crea uno nuevo.
+            $defaultSlotType = isset($this->defaults) && isset($this->defaults['type']) ?
+                $this->defaults['type'] :
+                sfConfig::get('app_zeroSimpleCMS_defaults_slotType', $defaultSlotType);
+
+            $slotClass = 'zeroSimpleCMS' . ucfirst($defaultSlotType) . 'Slot';
+
+            /* @var $this ->slot zeroSimpleCMSSlotType */
+            $slot = new $slotClass;
+            $slot->setName($slotName);
+            $slot->setValue(isset($this->defaults) ? sfYaml::dump($this->defaults) : sfConfig::get('app_zeroSimpleCMS_defaults_slotValue', '[ Click to edit this slot ]'));
+        }
+
+        return $slot;
+    }
 }

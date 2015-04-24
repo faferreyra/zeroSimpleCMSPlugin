@@ -1,6 +1,4 @@
-<h1>Template de Ejemplo, sobreescribir</h1>
-
-<?php	
+<?php
 
 	/* @var $page sfSimpleCMSPage */
 	$template = $page->getTemplate();

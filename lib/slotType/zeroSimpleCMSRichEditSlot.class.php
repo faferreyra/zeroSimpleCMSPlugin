@@ -34,4 +34,10 @@ class zeroSimpleCMSRichEditSlot extends zeroSimpleCMSTextSlot
 		return 'richEdit';
 	}
 
+    public function setValue($value)
+    {
+        $serializedValue = json_decode($value, true);
+        $this->value = $serializedValue['html'];
+    }
+
 }

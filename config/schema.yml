@@ -1,7 +1,8 @@
 propel:
   sf_simple_cms_page:
-    _attributes:  { phpName: sfSimpleCMSPage, package: plugins.zeroSimpleCMSPlugin.lib.model }
+    _attributes:  { phpName: sfSimpleCMSPage, package: plugins.zeroSimpleCmsPlugin.lib.model }
     id:
+    slug:         { type : varchar, size: 255, index: unique }
     title:        { type : varchar, size: 255, index: unique }
     title_short:  { type : varchar, size: 255, index: unique }
     topic_id:     { type : integer }
@@ -11,18 +12,17 @@ propel:
     is_published: boolean
     is_secure:    boolean
     _propel_behaviors:
-      soft_delete:
-      sluggable:
+      archivable:
       nested_set:
       timestampable:
 
   sf_simple_cms_slot:
-    _attributes:  { phpName: sfSimpleCMSSlot, package: plugins.zeroSimpleCMSPlugin.lib.model }
+    _attributes:  { phpName: sfSimpleCMSSlot, package: plugins.zeroSimpleCmsPlugin.lib.model }
     page_id:      { type: integer, foreignTable: sf_simple_cms_page, foreignReference: id, required: true, onDelete: cascade, primaryKey: true }
     culture:      { isCulture: true, type: varchar(7), required: true, primaryKey: true }
     name:         { type: varchar(100), required: true, primaryKey: true }
     type:         { type: varchar(100), required: true, default: Text }        
     value:        { type: longvarchar }
     _propel_behaviors:
-      soft_delete:
+      archivable:
       timestampable:

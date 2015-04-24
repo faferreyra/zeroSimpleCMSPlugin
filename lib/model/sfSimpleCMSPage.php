@@ -27,6 +27,6 @@ class sfSimpleCMSPage extends BasesfSimpleCMSPage
 
 	public function createRawSlug()
 	{
-		return AgniUtils::createSlug($this->getTitle());
+		return $this->getTitle();
 	}
 }

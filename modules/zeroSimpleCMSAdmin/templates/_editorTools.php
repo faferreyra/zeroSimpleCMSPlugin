@@ -1,6 +1,6 @@
 <?php 
 
-	use_helper('jQuery', 'I18N');
+	use_helper('I18N');
 
 	$slug = $page->getSlug();
 	$is_publisher = true;
@@ -11,7 +11,7 @@
 <div id="editor-box">
   <h1>
     <?php echo __('Edition Tools') ?>
-    <?php echo jq_link_to_function('&nbsp;&nbsp;&nbsp;&nbsp;', "toggle_pane('tools');jQuery('#toolbar_minifier').toggleClass('minimized')", 'id=toolbar_minifier title='.__('Toggle toolbar')) ?>
+    <?php // echo jq_link_to_function('&nbsp;&nbsp;&nbsp;&nbsp;', "toggle_pane('tools');jQuery('#toolbar_minifier').toggleClass('minimized')", 'id=toolbar_minifier title='.__('Toggle toolbar')); ?>
   </h1>
 
   <div id="cms_toolbox_mode">
@@ -127,7 +127,7 @@
 
 <?php use_javascript('/zeroSimpleCMSPlugin/js/cookies_handler.js') ?>
 <?php use_javascript('/zeroSimpleCMSPlugin/js/editorTools.js') ?>
-<?php jq_add_plugins_by_name(array('ui', 'autocomplete')) ?>
+<?php // jq_add_plugins_by_name(array('ui', 'autocomplete')) ?>
 <?php // echo draggable_element('editor_box', array('revert' => 'save_toolbar_state')) ?>
 
 <?php if(function_exists('init_media_library')) echo init_media_library(true); ?>

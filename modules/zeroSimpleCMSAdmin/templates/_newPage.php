@@ -1,4 +1,4 @@
-<?php use_helper('jQuery', 'I18N'); ?>
+<?php use_helper('I18N'); ?>
 
 <div id="create-new-page-container" style="width: 400px;">
 
@@ -16,7 +16,7 @@
 		<tfoot>
 			<tr>
 				<td colspan="2">
-				<?php echo jq_submit_to_remote('btnCreateNewPage', __('Create Page'), array('url' => $url, 'update' => 'create-new-page-container' )); ?>
+				<?php // echo jq_submit_to_remote('btnCreateNewPage', __('Create Page'), array('url' => $url, 'update' => 'create-new-page-container' )); ?>
 				</td>
 			</tr>
 		</tfoot>
@@ -33,7 +33,7 @@
 
 				foreach( $fields as $key ) :
 					if($key[0] != '_') :
-						echo $form[$key]->renderRow();			
+                        echo $form[$key]->renderRow();
 					endif;
 				endforeach;
 				

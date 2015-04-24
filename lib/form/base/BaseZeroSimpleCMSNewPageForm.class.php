@@ -12,113 +12,100 @@
  */
 class BaseZeroSimpleCMSNewPageForm extends BaseFormPropel
 {
+    public function setup()
+    {
+        $category_options = array(
+            'model' => 'sfSimpleCMSPage',
+            'method' => 'getSlugWithLevel'
+        );
 
-	public function setup()
-	{
-		//sfSimpleCMSPageQuery::create()->findTree();
+        $propelChoice = new sfWidgetFormPropelChoice($category_options, array());
 
-		$category_options = array(
-			'model' => 'sfSimpleCMSPage',
-			'method' => 'getSlugWithLevel',
-			'query_methods' => array('findTree')
-		);
+        $templates = sfConfig::get('app_zeroSimpleCMS_templates', array('home' => 'Homepage Template'));
 
-		$propelChoice = new sfWidgetFormPropelChoice($category_options, array());
+        $this->setWidgets(array(
+            'id' => new sfWidgetFormInputHidden(array(), array('autocomplete' => 'off')),
+            'slug' => new sfWidgetFormInputText(array(), array('autocomplete' => 'off')),
+            'title' => new sfWidgetFormInputText(array(), array('autocomplete' => 'off')),
+            'title_short' => new sfWidgetFormInputText(array(), array('autocomplete' => 'off')),
+            'meta' => new sfWidgetFormInputText(array(), array('autocomplete' => 'off')),
+            'keywords' => new sfWidgetFormInputText(array(), array('autocomplete' => 'off')),
+            'template' => new sfWidgetFormChoice(array('choices' => $templates)),
+            'position' => new sfWidgetFormChoice(array('choices' => array('under' => 'under', 'after' => 'after'), 'expanded' => true, 'default' => 'under'), array('autocomplete' => 'off')),
+            'related_page' => $propelChoice
+        ));
 
-		$templates = sfConfig::get('app_zeroSimpleCMS_templates', array('home' => 'Homepage Template'));
+        $this->getWidgetSchema()->setNameFormat('page[%s]');
+        $this->setValidator('slug', new sfValidatorString());
+        $this->setValidator('title', new sfValidatorString());
+        $this->setValidator('title_short', new sfValidatorString());
+        $this->setValidator('keywords', new sfValidatorString(array('required' => false)));
+        $this->setValidator('meta', new sfValidatorString(array('required' => false)));
+        $this->setValidator('template', new sfValidatorString());
+        $this->setValidator('position', new sfValidatorChoice(array(
+            'choices' => array('under', 'after')
+        )));
 
-		$this->setWidgets(array(
-			'id' => new sfWidgetFormInputHidden(array(), array('autocomplete' => 'off')),
-			'title' => new sfWidgetFormInputText(array(), array('autocomplete' => 'off')),
-			'title_short' => new sfWidgetFormInputText(array(), array('autocomplete' => 'off')),
-			'meta' => new sfWidgetFormInputText(array(), array('autocomplete' => 'off')),
-			'keywords' => new sfWidgetFormInputText(array(), array('autocomplete' => 'off')),
-			'template' => new sfWidgetFormChoice(array('choices' => $templates)),
-			'position' => new sfWidgetFormChoice(array('choices' => array('under' => 'under', 'after' => 'after'), 'expanded' => true, 'default' => 'under'), array('autocomplete' => 'off')),
-			'related_page' => $propelChoice
-		));
+        $this->getWidgetSchema()->setLabel('title_short', 'Short Title');
+        $this->getWidgetSchema()->setLabel('meta', 'Description');
 
-		$this->getWidgetSchema()->setNameFormat('page[%s]');
+        $this->validatorSchema->setPostValidator(new sfValidatorAnd(array(
+            new sfValidatorPropelUnique(array(
+                'model' => 'sfSimpleCMSPage',
+                'column' => array('title'))),
+            new sfValidatorPropelUnique(array(
+                'model' => 'sfSimpleCMSPage',
+                'column' => array('title_short')))
+        )));
 
-		$this->setValidator('title', new sfValidatorString());
-		$this->setValidator('title_short', new sfValidatorString());
-		$this->setValidator('keywords', new sfValidatorString(array('required' => false)));
-		$this->setValidator('meta', new sfValidatorString(array('required' => false)));
-		$this->setValidator('template', new sfValidatorString());
-		$this->setValidator('position', new sfValidatorChoice(array(
-					'choices' => array('under', 'after')
-				)));
+        $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
+    }
 
-		$this->getWidgetSchema()->setLabel('title_short', 'Short Title');
-		$this->getWidgetSchema()->setLabel('meta', 'Description');
+    protected function doSave($con = null)
+    {
 
-		$this->validatorSchema->setPostValidator(new sfValidatorAnd(array(
-					new sfValidatorPropelUnique(array(
-						'model' => 'sfSimpleCMSPage',
-						'column' => array('title'))),
-					new sfValidatorPropelUnique(array(
-						'model' => 'sfSimpleCMSPage',
-						'column' => array('title_short')))
-				)));
+        parent::doSave($con);
 
-		$this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
+        // var_dump($this->values);
+        // -- Se graba el cambio de posición de la categoria.
+        $positionValues = $this->values['position'];
 
-		parent::setup();
-	}
+        if ($positionValues != null) {
+            /* @var $newPage sfSimpleCMSPage */
+            $newPage = $this->getObject();
 
-	protected function doSave($con = null)
-	{
+            $relatedPagesCollection = sfSimpleCMSPageQuery::create()->findById($this->values['related_page']);
+            $relatedPage = $relatedPagesCollection[0];
 
-		parent::doSave($con);
+            // -- Chequea si la página no es el root (no se puede mover).
+            if ($newPage->isRoot() == false) {
+                // -- Chequea si la página ya está dentro del arbol..
+                if ($newPage->isInTree() == false) {
+                    if ($positionValues == 'under') {
+                        $newPage->insertAsFirstChildOf($relatedPage, $con);
+                        $newPage->save();
+                    }
 
-		// var_dump($this->values);
-		// -- Se graba el cambio de posición de la categoria.
-		$positionValues = $this->values['position'];
+                    if ($positionValues == 'after') {
+                        $newPage->insertAsNextSiblingOf($relatedPage, $con);
+                        $newPage->save();
+                    }
+                } else {
+                    if ($positionValues == 'under') {
+                        $newPage->moveToLastChildOf($relatedPage, $con);
+                    }
 
-		if ($positionValues != null)
-		{
-			/* @var $newPage sfSimpleCMSPage */
-			$newPage = $this->getObject();
+                    if ($positionValues == 'after') {
+                        $newPage->moveToNextSiblingOf($relatedPage, $con);
+                    }
+                }
+            }
+        }
+    }
 
-			$relatedPagesCollection = sfSimpleCMSPageQuery::create()->findById($this->values['related_page']);
-			$relatedPage = $relatedPagesCollection[0];
-
-			// -- Chequea si la página no es el root (no se puede mover).
-			if ($newPage->isRoot() == false)
-			{
-				// -- Chequea si la página ya está dentro del arbol..
-				if ($newPage->isInTree() == false)
-				{
-					if ($positionValues == 'under')
-					{
-						$newPage->insertAsFirstChildOf($relatedPage, $con);
-						$newPage->save();
-					}
-
-					if ($positionValues == 'after')
-					{
-						$newPage->insertAsNextSiblingOf($relatedPage, $con);
-						$newPage->save();
-					}
-				} else
-				{
-					if ($positionValues == 'under')
-					{
-						$newPage->moveToLastChildOf($relatedPage, $con);
-					}
-
-					if ($positionValues == 'after')
-					{
-						$newPage->moveToNextSiblingOf($relatedPage, $con);
-					}
-				}
-			}
-		}
-	}
-
-	public function getModelName()
-	{
-		return "sfSimpleCMSPage";
-	}
+    public function getModelName()
+    {
+        return "sfSimpleCMSPage";
+    }
 
 }

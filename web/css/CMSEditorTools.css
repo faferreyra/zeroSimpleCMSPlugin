@@ -52,9 +52,9 @@ div.editable_slot:hover
 
 #editor-tools-container {
 	position: absolute;
-	top: 20px;
+	top: 150px;
 	right: 50px;
-	 width: 250px;
+    width: 250px;
 }
 
 

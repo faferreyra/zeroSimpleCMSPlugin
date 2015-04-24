@@ -12,6 +12,7 @@ abstract class BasesfSimpleCMSPageFormFilter extends BaseFormFilterPropel
   public function setup()
   {
     $this->setWidgets(array(
+      'slug'         => new sfWidgetFormFilterInput(),
       'title'        => new sfWidgetFormFilterInput(),
       'title_short'  => new sfWidgetFormFilterInput(),
       'topic_id'     => new sfWidgetFormFilterInput(),
@@ -20,8 +21,6 @@ abstract class BasesfSimpleCMSPageFormFilter extends BaseFormFilterPropel
       'keywords'     => new sfWidgetFormFilterInput(),
       'is_published' => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
       'is_secure'    => new sfWidgetFormChoice(array('choices' => array('' => 'yes or no', 1 => 'yes', 0 => 'no'))),
-      'deleted_at'   => new sfWidgetFormFilterDate(array('from_date' => new sfWidgetFormDate(), 'to_date' => new sfWidgetFormDate())),
-      'slug'         => new sfWidgetFormFilterInput(),
       'tree_left'    => new sfWidgetFormFilterInput(),
       'tree_right'   => new sfWidgetFormFilterInput(),
       'tree_level'   => new sfWidgetFormFilterInput(),
@@ -30,6 +29,7 @@ abstract class BasesfSimpleCMSPageFormFilter extends BaseFormFilterPropel
     ));
 
     $this->setValidators(array(
+      'slug'         => new sfValidatorPass(array('required' => false)),
       'title'        => new sfValidatorPass(array('required' => false)),
       'title_short'  => new sfValidatorPass(array('required' => false)),
       'topic_id'     => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -38,8 +38,6 @@ abstract class BasesfSimpleCMSPageFormFilter extends BaseFormFilterPropel
       'keywords'     => new sfValidatorPass(array('required' => false)),
       'is_published' => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
       'is_secure'    => new sfValidatorChoice(array('required' => false, 'choices' => array('', 1, 0))),
-      'deleted_at'   => new sfValidatorDateRange(array('required' => false, 'from_date' => new sfValidatorDate(array('required' => false)), 'to_date' => new sfValidatorDate(array('required' => false)))),
-      'slug'         => new sfValidatorPass(array('required' => false)),
       'tree_left'    => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'tree_right'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
       'tree_level'   => new sfValidatorSchemaFilter('text', new sfValidatorInteger(array('required' => false))),
@@ -63,6 +61,7 @@ abstract class BasesfSimpleCMSPageFormFilter extends BaseFormFilterPropel
   {
     return array(
       'id'           => 'Number',
+      'slug'         => 'Text',
       'title'        => 'Text',
       'title_short'  => 'Text',
       'topic_id'     => 'Number',
@@ -71,8 +70,6 @@ abstract class BasesfSimpleCMSPageFormFilter extends BaseFormFilterPropel
       'keywords'     => 'Text',
       'is_published' => 'Boolean',
       'is_secure'    => 'Boolean',
-      'deleted_at'   => 'Date',
-      'slug'         => 'Text',
       'tree_left'    => 'Number',
       'tree_right'   => 'Number',
       'tree_level'   => 'Number',

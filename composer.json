@@ -5,6 +5,12 @@
 	"keywords" : ["symfony", "cms"],
 	"require" : {
 		"composer/installers" : "*",
-		"propel/sf-propel-o-r-m-plugin": "dev-master"
+		"propel/sf-propel-o-r-m-plugin": "dev-master",
+		"symfony/tmc-twitter-bootstrap-plugin"
+	},
+	"extra" : {
+		"branch-alias" : {
+			"dev-master" : "1.0.0"
+		}
 	}
 }
