@@ -3,7 +3,6 @@
     "use strict";
 
     $(document).ready(function() {
-        CKEDITOR.disableAutoInline = true;
         registerHtmlEditors();
     });
 

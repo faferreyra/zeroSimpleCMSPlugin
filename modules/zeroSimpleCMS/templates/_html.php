@@ -1,7 +1,7 @@
 <?php if ($edition): ?>
     <div class="editable-slot editable-html-slot" data-page-slug="<?php echo $page->getSlug(); ?>"
          data-page-slot="<?php echo $slot->getName(); ?>">
-        <div class="editor" contenteditable="true"><?php echo $slot->getRawValue()->getValue(); ?></div>
+        <div class="editor"><?php echo $slot->getRawValue()->getValue(); ?></div>
         <div class="icons">
             <i class="hidden wait fa fa-spin fa-spinner"></i>
             <i class="hidden ok fa fa-check-circle"></i>
